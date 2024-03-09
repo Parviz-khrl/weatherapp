@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather app</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <header class="header">
+      <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+              <a class="navbar-brand" href="index.html">Weather App</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                      <li class="nav-item">
+                          <a class="nav-link" href="index.html">Home</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="app.html">The App</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="code.html">The code</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="https://github.com/Parviz-khrl/weatherapp" target="_blank">Git Repo</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link" href="https://parvizkportfolio.netlify.app/" target="_blank">About</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+    </header>
+
+    <main class="main-code">
+        <div class="code-header">The Code for Weather App</div>
+        <div class="code-container1">
+            <div class="code-container">
+                <div class="line-numbers" id="line-numbers-container">
+                </div>
+                <div class="code-editor">
+<pre id="code-content"><span id="comments">// This event listener waits for the HTML document to be fully loaded and parsed before executing its code</span>
+document.<span id="comment-yellow">addEventListener</span>("DOMContentLoaded", <span id="comment-blue">function()</span> {
+                          
+  <span id="comments">// This object contains methods for fetching and displaying weather information</span>
+  <span id="comment-blue">const</span> weather = {
+    <span id="comments">// API key for accessing OpenWeatherMap API</span>
+    apiKey: "b58a93def5b9ad3ecc5961b0ba92720f",
+                              
+    <span id="comments">// Method for fetching weather data for a given city</span>
+    fetchWeather: <span id="comment-blue">function</span><span id="comment-yellow">(city)</span> {
+        <span id="comments">// Fetch weather data from OpenWeatherMap API</span>
+        fetch(
+             "https://api.openweathermap.org/data/2.5/weather?q=" +
+              city +
+              "&units=metric&appid=" +
+               this.<span id="comment-yellow">apiKey</span>
+             )
+             .then((response) => {
+                <span id="comments">// Check if response is successful</span>
+                <span id="comment-blue">if</span> (!response.ok) {
+                alert("No weather found.");
+                throw new Error("No weather found.");
+                }
+                <span id="comments">// Convert response to JSON format</span>
+             return response.json();
+             })
+             <span id="comments">// After receiving JSON data, call displayWeather method to render weather information</span>
+             .then((data) => this.<span id="comment-yellow">displayWeather</span>(data));
+    },
+                                
+    <span id="comments">// Method for displaying weather information on the webpage</span>
+    displayWeather: <span id="comment-blue">function</span>(data) {
+        // Extract relevant data from the JSON response</span>
+        <span id="comment-blue">const</span> { name } = data;
+        <span id="comment-blue">const</span> { icon, description } = data.weather[0];
+        <span id="comment-blue">const</span> { temp, humidity } = data.main;
+        <span id="comment-blue">const</span> { speed } = data.wind;
+                                    
+        <span id="comments">// Update HTML elements with weather information</span>
+        document.<span id="comment-yellow">querySelector</span>(".city").innerText = "Weather in " + name;
+        document.<span id="comment-yellow">querySelector</span>(".icon").src =
+             "https://openweathermap.org/img/wn/" + icon + ".png";
+        document.<span id="comment-yellow">querySelector</span>(".description").innerText = description;
+        document.<span id="comment-yellow">querySelector</span>(".temp").innerText = temp + "°C";
+        document.<span id="comment-yellow">querySelector</span>(".humidity").innerText =
+             "Humidity: " + humidity + "%";
+        document.<span id="comment-yellow">querySelector</span>(".wind").innerText =
+             "Wind speed: " + speed + " km/h";
+        document.<span id="comment-yellow">querySelector</span>(".weather").classList.remove("loading");
+        document.body.style.<span id="comment-yellow">backgroundImage</span> =
+             "url('https://source.unsplash.com/1600x900/?" + name + "')";
+    },
+                              
+    <span id="comments">// Method for initiating weather search based on user input</span>
+    search: <span id="comment-blue">function()</span> {
+        this.<span id="comment-yellow">fetchWeather</span>(document.querySelector(".search-bar").value);
+    },
+};
+
+<span id="comments">// Event listener for the search button, triggers weather search</span>
+document.<span id="comment-yellow">querySelector</span>(".search button").addEventListener("click", <span id="comment-blue">function()</span> {
+    weather.search();
+});
+
+<span id="comments">// Event listener for the search input field, triggers weather search on pressing Enter</span>
+document.<span id="comment-yellow">querySelector</span>(".search-bar").addEventListener("keyup", <span id="comment-blue">function</span>(event) {
+    <span id="comment-blue">if</span> (event.key == "Enter") {
+        weather.search();
+    }
+});
+
+<span id="comments">// Fetch weather data for Moscow by default when the page loads</span>
+weather.<span id="comment-yellow">fetchWeather</span>("Moscow");
+});
+
+<span id="comments">// This event listener waits for the HTML document to be fully loaded and parsed before executing its code</span>
+document.<span id="comment-yellow">addEventListener</span>("DOMContentLoaded", <span id="comment-blue">function()</span> {
+<span id="comments">// Get references to HTML elements</span>
+<span id="comment-blue">const</span> lineNumbersContainer = document.getElementById("line-numbers-container");
+<span id="comment-blue">const</span> codeContent = document.getElementById("code-content");
+
+<span id="comments">// Split the code content into lines</span>
+<span id="comment-blue">const</span> lines = codeContent.innerText.split("\n");
+
+<span id="comments">// Loop through each line and create line number elements</span>
+<span id="comment-blue">for</span> (<span id="comment-blue">let</span> i = 1; i <= lines.length; i++) {
+    <span id="comment-blue">const</span> lineNumberElement = document.createElement("pre");
+    lineNumberElement.<span id="comment-yellow">setAttribute</span>("data-line", i);
+    lineNumberElement.<span id="comment-yellow">textContent</span> = i;
+    lineNumbersContainer.<span id="comment-yellow">appendChild</span>(lineNumberElement);
+}
+});
+ 
+</pre>
+                </div>
+            </div>
+            <div class="description-cont">
+                <div>
+                    <ol>
+                        <li>fetchWeather(city)</li>
+                        <p>The fetchWeather function is responsible for fetching weather data from the OpenWeatherMap API based
+                            on the provided city. It constructs the API URL with the given city and makes a fetch request.
+                            Upon receiving the response, it checks if the response is successful. If not, it alerts the user
+                            about the absence of weather data. Otherwise, it converts the response to JSON format and passes
+                            it to the displayWeather function.</p>
+                        <li>displayWeather(data)</li>
+                        <p>The displayWeather function is tasked with displaying the weather data obtained from the API. It
+                            extracts relevant information such as city name, weather icon, description, temperature, humidity,
+                            and wind speed from the provided data object. Then, it updates the corresponding elements in the
+                            HTML document with this information. Additionally, it removes the "loading" class from the weather
+                            container to indicate that the data has been loaded. Furthermore, it sets the background image of
+                            the document's body using an image related to the fetched city.</p>
+                        <li>search()</li>
+                        <p>The search function is a method of the weather object. It is invoked when the user initiates a
+                            search for weather information. This function extracts the value entered by the user in the search
+                            bar and calls the fetchWeather function with this value, triggering the weather data fetching
+                            process.</p>
+                        <li>Event Listeners:</li>
+                        <p>Two event listeners are attached to the search button and the search bar, listening for the click
+                            and keyup events respectively. These event listeners invoke the search function when triggered,
+                            allowing users to search for weather information by clicking the button or pressing Enter after
+                            entering a city name. Another event listener is attached to the hamburger menu icon. When
+                            clicked, it toggles the "active" class on both the hamburger menu icon and the navigation menu,
+                            enabling a mobile-friendly menu functionality. Lastly, event listeners are attached to each
+                            navigation link. When clicked, they close the navigation menu by removing the "active" class from
+                            both the hamburger menu icon and the navigation menu.</p>
+                        <li>Dynamic Line Numbers Generation:</li>
+                        <p>The last part of the code dynamically generates line numbers for the code content. It calculates
+                            the number of lines in the code-content element and creates pre elements for each line number,
+                            appending them to the lineNumbersContainer. This provides a visual aid for users to keep track of
+                            line numbers in the code content.</p>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+          <h3>Parviz Khairullaev</h3>
+        </div>
+        <div class="footer-icons">
+          <a href="https://www.linkedin.com/in/parviz-khairullaev-413b42216/" target="_blank">
+            <img src="./linkedin.png" alt="linkedinicon" class="icon" />
+          </a>
+          <a href="https://github.com/Parviz-khrl" target="_blank">
+            <img src="./github.png" alt="githubicon" class="icon" />
+          </a>
+        </div>
+      </footer>
+      
+    <script src="./script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
